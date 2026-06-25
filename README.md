@@ -9,7 +9,7 @@ This is a shareable pack: the **thinking**, a **recommendation**, and a **runnab
 ## What we can do today — the runnable demo
 
 ```bash
-cd apps && docker compose up -d      # no API key — uses a local model
+cd apps && docker compose up -d --wait   # no API key; first run builds + installs (a few min), --wait blocks until ready
 # then open http://localhost:5173
 ```
 

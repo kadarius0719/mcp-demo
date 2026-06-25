@@ -21,8 +21,13 @@ Everything runs in Docker — **no global PHP / Composer / Node installs**. Stac
 
 ```bash
 cd apps
-docker compose up -d --build      # first boot installs deps + seeds the catalog
+docker compose up -d --wait        # blocks until every service is healthy
 ```
+
+**First run takes a few minutes** — it builds the PHP image and installs Composer/npm deps. `--wait`
+holds until every service reports **healthy** (watch with `docker compose ps`); only then do the URLs
+respond. Without `--wait` the containers say "running" before the apps are actually serving — open the
+page too early and it looks dead but isn't. Tail progress with `docker compose logs -f`.
 
 Then open:
 
@@ -36,6 +41,13 @@ Then open:
 | http://localhost:3001/healthz | **MCP server** health |
 
 Stop with `docker compose down` (add `-v` to also wipe the SQLite data + installed deps).
+
+**Troubleshooting:**
+- *Page doesn't load right after `up`* — it's still installing; wait for `docker compose ps` to show
+  every service `healthy` (or use `up -d --wait`).
+- *A port is already in use* (8001 / 8002 / 5173 / 3001 / 8003) — stop whatever's using it, or change
+  the host port in `docker-compose.yml`.
+- *Inspect a service* — `docker compose logs <service>` (e.g. `web`, `app-a`, `agent`).
 
 ## The point of the demo
 

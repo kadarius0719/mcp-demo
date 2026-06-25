@@ -15,6 +15,12 @@ services:
       - app_a_var:/app/var
     ports:
       - "8001:8000"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1:8000/api/phones') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
 
   # App B — experience capture API (requires a canonical phone)
   app-b-api:
@@ -29,6 +35,12 @@ services:
       - app_b_var:/app/var
     ports:
       - "8002:8000"
+    healthcheck:
+      test: ["CMD", "php", "-r", "exit(@file_get_contents('http://127.0.0.1:8000/api/experiences') === false ? 1 : 0);"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 120s
 
   # App B — React frontend (the constrained phone field)
   web:
@@ -40,6 +52,12 @@ services:
       - web_node_modules:/app/node_modules
     ports:
       - "5173:5173"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:5173/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
 
   # MCP server — federates App A + App B as read-only tools (the "Gateway" role)
   mcp:
@@ -55,6 +73,12 @@ services:
       - mcp_node_modules:/app/node_modules
     ports:
       - "3001:3001"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
 
   # Agent — MCP client + local-model tool-use loop (read-only).
   # By default it uses your HOST Ollama (no API key, no re-download).
@@ -77,6 +101,12 @@ services:
       - agent_node_modules:/app/node_modules
     ports:
       - "8003:3002"
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3002/healthz').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+      start_period: 90s
 
   # Optional self-contained model (only if you DON'T have native Ollama):
   #   docker compose --profile bundled-model up -d
