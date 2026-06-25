@@ -1,0 +1,69 @@
+<svg width="900" height="540" viewBox="0 0 900 540" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Decision flow for what works best</title>
+<desc>Start with the simplest option. If the feature lives inside one app, use scoped binding. If the existing API answers it, use a Gateway OpenAPI target with no MCP code. If it needs analytics, add guarded read-only SQL. Otherwise, for documents, add RAG. Across all paths use one Gateway, Policy allowlist, and token-derived tenant.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.q{font-size:13.5px;font-weight:600;fill:#3730A3}
+.o{font-size:13.5px;font-weight:600}
+.yn{font-size:11px;font-weight:700;fill:#6B7280}
+rect{stroke-width:1.5}
+.ln{stroke:#9CA3AF;stroke-width:1.6;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="538.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">What works best &#8212; pick your path</text>
+<text class="sub" x="40" y="65">Start simple; add capability only when a question needs it</text>
+
+<!-- start -->
+<rect x="60" y="84" width="360" height="34" rx="9" fill="#F3F4F6" stroke="#D1D5DB"/>
+<text x="240" y="106" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="600" fill="#374151">Start: a new natural-language feature</text>
+<line class="ln" x1="240" y1="118" x2="240" y2="130" marker-end="url(#ar)"/>
+
+<!-- Q1 -->
+<rect x="60" y="132" width="360" height="52" rx="9" fill="#E0E7FF" stroke="#6366F1"/>
+<text class="q" x="240" y="163" text-anchor="middle">Inside one app, asking that app's data?</text>
+<rect x="470" y="132" width="390" height="52" rx="9" fill="#DCFCE7" stroke="#22C55E"/>
+<text class="o" x="490" y="155" fill="#166534">Scoped binding to that app's MCP</text>
+<text x="490" y="172" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#15803D">(or a Gateway OpenAPI target) &#183; no routing</text>
+<line class="ln" x1="420" y1="158" x2="468" y2="158" marker-end="url(#ar)"/>
+<text class="yn" x="444" y="151" text-anchor="middle">YES</text>
+<line class="ln" x1="240" y1="184" x2="240" y2="210" marker-end="url(#ar)"/>
+<text class="yn" x="252" y="200">NO</text>
+
+<!-- Q2 -->
+<rect x="60" y="212" width="360" height="52" rx="9" fill="#E0E7FF" stroke="#6366F1"/>
+<text class="q" x="240" y="243" text-anchor="middle">Existing API / search already answers it?</text>
+<rect x="470" y="212" width="390" height="52" rx="9" fill="#DCFCE7" stroke="#22C55E"/>
+<text class="o" x="490" y="235" fill="#166534">Option 0 &#8212; Gateway OpenAPI target</text>
+<text x="490" y="252" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#15803D">no MCP code; reuses your controllers</text>
+<line class="ln" x1="420" y1="238" x2="468" y2="238" marker-end="url(#ar)"/>
+<text class="yn" x="444" y="231" text-anchor="middle">YES</text>
+<line class="ln" x1="240" y1="264" x2="240" y2="290" marker-end="url(#ar)"/>
+<text class="yn" x="252" y="280">NO</text>
+
+<!-- Q3 -->
+<rect x="60" y="292" width="360" height="52" rx="9" fill="#E0E7FF" stroke="#6366F1"/>
+<text class="q" x="240" y="323" text-anchor="middle">Needs ad-hoc analytics / aggregates?</text>
+<rect x="470" y="292" width="390" height="52" rx="9" fill="#FEF3C7" stroke="#F59E0B"/>
+<text class="o" x="490" y="315" fill="#92400E">Guarded read-only SQL over views</text>
+<text x="490" y="332" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#B45309">SELECT-only &#183; tenant injected &#183; row caps</text>
+<line class="ln" x1="420" y1="318" x2="468" y2="318" marker-end="url(#ar)"/>
+<text class="yn" x="444" y="311" text-anchor="middle">YES</text>
+
+<!-- Q3 NO -> RAG -->
+<polyline class="ln" points="240,344 240,399 468,399" marker-end="url(#ar)"/>
+<text class="yn" x="252" y="372">NO</text>
+<rect x="470" y="372" width="390" height="52" rx="9" fill="#DBEAFE" stroke="#3B82F6"/>
+<text class="o" x="490" y="395" fill="#1E40AF">Documents &#8594; RAG / Knowledge Base</text>
+<text x="490" y="412" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#1D4ED8">embed + semantic search over prose</text>
+
+<!-- universal band -->
+<rect x="60" y="450" width="800" height="64" rx="10" fill="#EEF2FF" stroke="#6366F1"/>
+<text x="78" y="473" font-family="Helvetica,Arial,sans-serif" font-size="13" font-weight="700" fill="#3730A3">Across every path:</text>
+<text x="78" y="492" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#3730A3">One AgentCore Gateway (federation + semantic tool selection) &#183; AgentCore Policy hard-allowlist of tools.</text>
+<text x="78" y="508" font-family="Helvetica,Arial,sans-serif" font-size="12.5" fill="#3730A3">Tenant identity from the OAuth token &#8212; never a tool argument. Prefer app logic over raw SQL.</text>
+</svg>

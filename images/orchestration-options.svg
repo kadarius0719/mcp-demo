@@ -1,0 +1,55 @@
+<svg width="900" height="440" viewBox="0 0 900 440" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Orchestration options compared: AgentCore blocks, fully custom, hybrid</title>
+<desc>AgentCore building blocks give managed federation, OBO and policy at the cost of control and lock-in. A fully custom Strands loop gives full control and portability but more to build. Hybrid uses Gateway for federation and your own loop on top.</desc>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.ct{font-size:16px;font-weight:700}.what{font-size:12px;fill:#6B7280}
+.hdr{font-size:11px;font-weight:700}.li{font-size:12px}
+.pro{fill:#15803D}.con{fill:#B91C1C}
+</style>
+<rect x="0.75" y="0.75" width="898.5" height="438.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">Orchestration &#8212; AgentCore vs. custom vs. hybrid</text>
+<text class="sub" x="40" y="65">Bedrock runs the model either way; this is about who runs the agent loop</text>
+
+<!-- Card 1: AgentCore blocks (recommended) -->
+<rect x="30" y="96" width="270" height="296" rx="12" fill="#F0FDF4" stroke="#22C55E" stroke-width="1.5"/>
+<text class="ct" x="48" y="126" fill="#166534">AgentCore blocks</text>
+<rect x="196" y="110" width="92" height="19" rx="9.5" fill="#22C55E"/><text x="242" y="123.5" text-anchor="middle" fill="#ffffff" font-size="10" font-weight="700" font-family="Helvetica,Arial,sans-serif">RECOMMENDED</text>
+<text class="what" x="48" y="148">AWS-managed building blocks</text>
+<text class="hdr" x="48" y="182" fill="#15803D">PROS</text>
+<text class="li pro" x="48" y="202">+ Federation &amp; OBO built in</text>
+<text class="li pro" x="48" y="221">+ Read-only credential broker</text>
+<text class="li pro" x="48" y="240">+ Tool selection at scale</text>
+<text class="hdr" x="48" y="276" fill="#B91C1C">CONS</text>
+<text class="li con" x="48" y="296">&#8211; Less control; some lock-in</text>
+<text class="li con" x="48" y="315">&#8211; Newer, still evolving</text>
+<text class="li con" x="48" y="334">&#8211; SigV4 not behind an ALB</text>
+
+<!-- Card 2: Fully custom -->
+<rect x="315" y="96" width="270" height="296" rx="12" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+<text class="ct" x="333" y="126" fill="#3730A3">Fully custom</text>
+<text class="what" x="333" y="148">Own loop: Strands + MCP</text>
+<text class="hdr" x="333" y="182" fill="#15803D">PROS</text>
+<text class="li pro" x="333" y="202">+ Full control of auth &amp; audit</text>
+<text class="li pro" x="333" y="221">+ Portable off AWS infra</text>
+<text class="li pro" x="333" y="240">+ Transparent, debuggable</text>
+<text class="hdr" x="333" y="276" fill="#B91C1C">CONS</text>
+<text class="li con" x="333" y="296">&#8211; You build federation</text>
+<text class="li con" x="333" y="315">&#8211; You build the cred broker</text>
+<text class="li con" x="333" y="334">&#8211; More code to maintain</text>
+
+<!-- Card 3: Hybrid -->
+<rect x="600" y="96" width="270" height="296" rx="12" fill="#F0FDFA" stroke="#14B8A6" stroke-width="1.5"/>
+<text class="ct" x="618" y="126" fill="#115E59">Hybrid</text>
+<text class="what" x="618" y="148">Gateway + your own loop</text>
+<text class="hdr" x="618" y="182" fill="#15803D">PROS</text>
+<text class="li pro" x="618" y="202">+ Managed fed, owned policy</text>
+<text class="li pro" x="618" y="221">+ Best control-vs-effort</text>
+<text class="li pro" x="618" y="240">+ Swap orchestration later</text>
+<text class="hdr" x="618" y="276" fill="#B91C1C">CONS</text>
+<text class="li con" x="618" y="296">&#8211; Two parts to integrate</text>
+<text class="li con" x="618" y="315">&#8211; Some Gateway coupling</text>
+
+<text class="sub" x="450" y="420" text-anchor="middle">Not locked in either way &#8212; the MCP servers/targets you build are reusable with any client.</text>
+</svg>

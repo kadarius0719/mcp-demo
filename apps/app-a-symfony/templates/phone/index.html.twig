@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}App A · Phone catalog{% endblock %}
+{% block body %}
+<div style="font-family: system-ui, -apple-system, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; color:#1f2937;">
+  <p style="color:#6366F1;font-weight:600;margin:0 0 .25rem;">App A — source of truth</p>
+  <h1 style="margin:.2rem 0;">Phone catalog</h1>
+  <p style="color:#6b7280;">These are the canonical phones. App B's experience form pulls this exact list so its phone field is deterministic.</p>
+  <p>
+    <a href="{{ path('phone_new') }}" style="color:#4338ca;">+ Add a phone</a>
+    &nbsp;·&nbsp;
+    <a href="/api/phones" style="color:#4338ca;">view <code>/api/phones</code> (JSON)</a>
+  </p>
+  <table style="border-collapse:collapse;width:100%;margin-top:1rem;">
+    <thead>
+      <tr style="text-align:left;border-bottom:2px solid #e5e7eb;">
+        <th style="padding:.5rem;">Name</th><th style="padding:.5rem;">Year</th><th style="padding:.5rem;">Storage</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for p in phones %}
+      <tr style="border-bottom:1px solid #f3f4f6;">
+        <td style="padding:.5rem;"><strong>{{ p.name }}</strong></td>
+        <td style="padding:.5rem;">{{ p.releaseYear }}</td>
+        <td style="padding:.5rem;color:#6b7280;">{{ p.storageOptions|join(', ') }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="3" style="padding:.5rem;color:#9ca3af;">No phones yet — add one.</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

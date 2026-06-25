@@ -1,0 +1,58 @@
+<svg width="900" height="520" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>AWS deployment and security topology for per-app MCP servers</title>
+<desc>The chat UI, central agent, AgentCore Gateway, per-app MCP servers and RDS read replicas all run in private subnets. Each MCP server is an OAuth resource server that derives tenant from the token. SigV4 outbound auth does not work behind an ALB.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.t{font-size:13px;font-weight:600}.s{font-size:10.5px}
+.blue rect{fill:#DBEAFE;stroke:#3B82F6}.blue .t{fill:#1E40AF}.blue .s{fill:#1D4ED8}
+.indigo rect{fill:#E0E7FF;stroke:#6366F1}.indigo .t{fill:#3730A3}.indigo .s{fill:#4338CA}
+.teal rect{fill:#CCFBF1;stroke:#14B8A6}.teal .t{fill:#115E59}.teal .s{fill:#0F766E}
+.gray rect{fill:#F3F4F6;stroke:#D1D5DB}.gray .t{fill:#374151}.gray .s{fill:#6B7280}
+rect{stroke-width:1.5}
+.ln{stroke:#9CA3AF;stroke-width:1.6;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="518.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">AWS deployment &amp; security &#8212; one MCP server per app</text>
+<text class="sub" x="40" y="65">Bedrock model is AWS-managed; everything else runs in your private subnets</text>
+
+<!-- VPC boundary -->
+<rect x="30" y="84" width="840" height="356" rx="12" fill="#F9FAFB" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="6 4"/>
+<text x="46" y="106" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#6B7280">VPC &#183; private subnets</text>
+
+<!-- flow -->
+<g class="blue"><rect x="46" y="150" width="128" height="58" rx="9"/><text class="t" x="110" y="174" text-anchor="middle">App chat UI</text><text class="s" x="110" y="191" text-anchor="middle">in the app</text></g>
+<g class="indigo"><rect x="196" y="150" width="150" height="58" rx="9"/><text class="t" x="271" y="174" text-anchor="middle">Central agent</text><text class="s" x="271" y="191" text-anchor="middle">Bedrock + Claude</text></g>
+<g class="indigo"><rect x="368" y="150" width="160" height="58" rx="9"/><text class="t" x="448" y="174" text-anchor="middle">AgentCore Gateway</text><text class="s" x="448" y="191" text-anchor="middle">federate &#183; OAuth &#183; select</text></g>
+<g class="teal"><rect x="560" y="118" width="160" height="50" rx="9"/><text class="t" x="640" y="138" text-anchor="middle">MCP server &#183; app A</text><text class="s" x="640" y="154" text-anchor="middle">ECS Fargate &#183; OAuth RS</text></g>
+<g class="teal"><rect x="560" y="190" width="160" height="50" rx="9"/><text class="t" x="640" y="210" text-anchor="middle">MCP server &#183; app B</text><text class="s" x="640" y="226" text-anchor="middle">ECS Fargate &#183; OAuth RS</text></g>
+<g class="gray"><rect x="740" y="154" width="112" height="50" rx="9"/><text class="t" x="796" y="174" text-anchor="middle">RDS read</text><text class="s" x="796" y="190" text-anchor="middle">replicas</text></g>
+
+<line class="ln" x1="174" y1="179" x2="194" y2="179" marker-end="url(#ar)"/>
+<line class="ln" x1="346" y1="179" x2="366" y2="179" marker-end="url(#ar)"/>
+<line class="ln" x1="528" y1="174" x2="558" y2="146" marker-end="url(#ar)"/>
+<line class="ln" x1="528" y1="184" x2="558" y2="212" marker-end="url(#ar)"/>
+<line class="ln" x1="720" y1="143" x2="738" y2="167" marker-end="url(#ar)"/>
+<line class="ln" x1="720" y1="215" x2="738" y2="191" marker-end="url(#ar)"/>
+
+<!-- green note -->
+<rect x="46" y="262" width="492" height="50" rx="8" fill="#F0FDF4" stroke="#22C55E" stroke-width="1.5"/>
+<text x="62" y="283" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#166534"><tspan font-weight="700">&#10003; OAuth 2.1 resource server per app.</tspan> Tenant comes from the token</text>
+<text x="62" y="301" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#166534">claim, never a tool argument; row-level authz reused from the app.</text>
+
+<!-- SG note -->
+<rect x="552" y="262" width="300" height="50" rx="8" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/>
+<text x="568" y="283" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#374151"><tspan font-weight="700">Security groups:</tspan> each MCP server</text>
+<text x="568" y="301" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#374151">accepts inbound only from the agent SG.</text>
+
+<!-- red danger note -->
+<rect x="46" y="326" width="806" height="54" rx="8" fill="#FEF2F2" stroke="#EF4444" stroke-width="1.5"/>
+<text x="62" y="349" font-family="Helvetica,Arial,sans-serif" font-size="12.5" font-weight="700" fill="#991B1B">&#9888; Gateway SigV4 outbound auth does NOT work behind an ALB / raw ECS.</text>
+<text x="62" y="368" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#991B1B">Use OAuth or API-key &#8212; or front MCP with API Gateway / Lambda URL / AgentCore Runtime.</text>
+
+<text x="40" y="470" font-family="Helvetica,Arial,sans-serif" font-size="12" fill="#6B7280">Read-only: dedicated mcp_ro user on the replica &#183; Secrets Manager or IAM DB auth &#183; audit every tool call (tool, tenant, rows, latency).</text>
+</svg>

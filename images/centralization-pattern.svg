@@ -1,0 +1,63 @@
+<svg width="900" height="590" viewBox="0 0 900 590" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Centralizing cross-app interop — thin per app, thick center</title>
+<desc>Consumer chat features and app forms (thin) call a central platform built once: a central agent with audit, AgentCore Gateway for federation and semantic tool selection, a reference-data API + SDK, entity resolution, and AWS-managed Identity and Policy. The Gateway reaches each app's thin read-only exposure, which reads from its own RDS replica.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.t{font-size:13.5px;font-weight:600}.s{font-size:11px}.lbl{font-size:11px;font-weight:700;letter-spacing:.05em}
+.blue rect{fill:#DBEAFE;stroke:#3B82F6}.blue .t{fill:#1E40AF}.blue .s{fill:#1D4ED8}
+.indigo rect{fill:#E0E7FF;stroke:#6366F1}.indigo .t{fill:#3730A3}.indigo .s{fill:#4338CA}
+.gw rect{fill:#C7D2FE;stroke:#4338CA;stroke-width:2}.gw .t{fill:#312E81}.gw .s{fill:#3730A3}
+.teal rect{fill:#CCFBF1;stroke:#14B8A6}.teal .t{fill:#115E59}.teal .s{fill:#0F766E}
+.amber rect{fill:#FEF3C7;stroke:#F59E0B}.amber .t{fill:#92400E}.amber .s{fill:#B45309}
+.gray rect{fill:#F3F4F6;stroke:#D1D5DB}.gray .t{fill:#374151}.gray .s{fill:#6B7280}
+rect{stroke-width:1.5}
+.ln{stroke:#9CA3AF;stroke-width:1.6;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="588.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="40">Centralizing cross-app interop &#8212; thin per app, thick center</text>
+<text class="sub" x="40" y="61">Each app contributes a tiny read-only exposure; everything reusable is built once in the center.</text>
+
+<!-- Tier 1: consumers -->
+<g class="blue"><rect x="130" y="84" width="290" height="56" rx="10"/><text class="t" x="275" y="108" text-anchor="middle">Chat features (thin)</text><text class="s" x="275" y="125" text-anchor="middle">agentic &#183; POST /v1/query</text></g>
+<g class="blue"><rect x="480" y="84" width="290" height="56" rx="10"/><text class="t" x="625" y="108" text-anchor="middle">App forms (thin)</text><text class="s" x="625" y="125" text-anchor="middle">deterministic &#183; &lt;entity-picker&gt; SDK</text></g>
+<line class="ln" x1="262" y1="140" x2="195" y2="198" marker-end="url(#ar)"/>
+<line class="ln" x1="638" y1="140" x2="712" y2="198" marker-end="url(#ar)"/>
+
+<!-- Tier 2: central platform -->
+<rect x="40" y="166" width="820" height="206" rx="12" fill="#EEF2FF" stroke="#6366F1"/>
+<text class="lbl" x="58" y="187" fill="#4338CA">BUILD ONCE &#183; CENTRAL PLATFORM</text>
+<g class="indigo"><rect x="58" y="198" width="236" height="64" rx="10"/><text class="t" x="176" y="222" text-anchor="middle">Central agent + audit</text><text class="s" x="176" y="240" text-anchor="middle">governed visibility &#183; redaction</text></g>
+<g class="gw"><rect x="322" y="198" width="256" height="64" rx="10"/><text class="t" x="450" y="222" text-anchor="middle">AgentCore Gateway</text><text class="s" x="450" y="240" text-anchor="middle">federate &#183; semantic select &#183; catalog</text></g>
+<g class="indigo"><rect x="606" y="198" width="236" height="64" rx="10"/><text class="t" x="724" y="222" text-anchor="middle">Reference-data API + SDK</text><text class="s" x="724" y="240" text-anchor="middle">deterministic lookups</text></g>
+<line class="ln" x1="296" y1="230" x2="320" y2="230" marker-end="url(#ar)"/>
+<line class="ln" x1="604" y1="230" x2="580" y2="230" marker-end="url(#ar)"/>
+<g class="indigo"><rect x="58" y="288" width="300" height="44" rx="9"/><text class="t" x="208" y="315" text-anchor="middle">Entity resolution &#183; id-map (xref)</text></g>
+<g class="amber"><rect x="378" y="288" width="464" height="44" rx="9"/><text class="s" x="610" y="309" text-anchor="middle">AWS-managed &#183; Identity (OBO + credential broker) &#183; Policy (per-feature allowlists)</text></g>
+
+<line class="ln" x1="195" y1="372" x2="195" y2="408" marker-end="url(#ar)"/>
+<line class="ln" x1="450" y1="372" x2="450" y2="408" marker-end="url(#ar)"/>
+<line class="ln" x1="715" y1="372" x2="715" y2="408" marker-end="url(#ar)"/>
+
+<!-- Tier 3: apps (thin exposure) -->
+<g class="teal"><rect x="90" y="410" width="210" height="62" rx="10"/><text class="t" x="195" y="434" text-anchor="middle">App A &#183; thin exposure</text><text class="s" x="195" y="452" text-anchor="middle">interop bundle / OpenAPI target</text></g>
+<g class="teal"><rect x="345" y="410" width="210" height="62" rx="10"/><text class="t" x="450" y="434" text-anchor="middle">App B &#183; thin exposure</text><text class="s" x="450" y="452" text-anchor="middle">&#8594; existing read-only API</text></g>
+<g class="teal"><rect x="600" y="410" width="210" height="62" rx="10"/><text class="t" x="715" y="434" text-anchor="middle">App C &#183; thin exposure</text><text class="s" x="715" y="452" text-anchor="middle">&#8594; existing read-only API</text></g>
+
+<line class="ln" x1="195" y1="472" x2="195" y2="502" marker-end="url(#ar)"/>
+<line class="ln" x1="450" y1="472" x2="450" y2="502" marker-end="url(#ar)"/>
+<line class="ln" x1="715" y1="472" x2="715" y2="502" marker-end="url(#ar)"/>
+<g class="gray"><rect x="90" y="504" width="210" height="32" rx="8"/><text class="s" x="195" y="524" text-anchor="middle">RDS read replica &#183; mcp_ro</text></g>
+<g class="gray"><rect x="345" y="504" width="210" height="32" rx="8"/><text class="s" x="450" y="524" text-anchor="middle">RDS read replica &#183; mcp_ro</text></g>
+<g class="gray"><rect x="600" y="504" width="210" height="32" rx="8"/><text class="s" x="715" y="524" text-anchor="middle">RDS read replica &#183; mcp_ro</text></g>
+
+<!-- legend -->
+<rect x="40" y="556" width="12" height="12" rx="3" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/><text class="s" x="58" y="566" fill="#6B7280">consumers (thin)</text>
+<rect x="190" y="556" width="12" height="12" rx="3" fill="#E0E7FF" stroke="#6366F1" stroke-width="1.5"/><text class="s" x="208" y="566" fill="#6B7280">central (build once)</text>
+<rect x="350" y="556" width="12" height="12" rx="3" fill="#CCFBF1" stroke="#14B8A6" stroke-width="1.5"/><text class="s" x="368" y="566" fill="#6B7280">app exposure (thin)</text>
+<rect x="510" y="556" width="12" height="12" rx="3" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.5"/><text class="s" x="528" y="566" fill="#6B7280">AWS-managed</text>
+</svg>

@@ -1,0 +1,13 @@
+# macOS
+.DS_Store
+
+# Demo dependencies + data live in Docker volumes, not the repo
+apps/*/node_modules/
+apps/*/vendor/
+apps/*/var/
+apps/**/*.db
+apps/.env
+
+# editor
+*.swp
+*.tmp

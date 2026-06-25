@@ -1,0 +1,81 @@
+<svg width="900" height="560" viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Five patterns for routing a query to the right app MCP server</title>
+<desc>Scoped binding fixes one app; flat federation exposes all tools; two-stage router classifies then narrows; tool retrieval exposes a top-k subset; supervisor delegates to a per-app subagent. Teal servers are exposed to the model this turn, gray dashed servers are hidden.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.t{font-size:13.5px;font-weight:600}.s{font-size:11px}
+.gray rect{fill:#F3F4F6;stroke:#D1D5DB}.gray .t{fill:#374151}.gray .s{fill:#6B7280}
+.indigo rect{fill:#E0E7FF;stroke:#6366F1}.indigo .t{fill:#3730A3}.indigo .s{fill:#4338CA}
+.teal rect{fill:#CCFBF1;stroke:#14B8A6}.teal .t{fill:#115E59}
+.hide rect{fill:#F3F4F6;stroke:#9CA3AF;stroke-dasharray:4 3}.hide .t{fill:#9CA3AF}
+rect{stroke-width:1.5}
+.ln{stroke:#9CA3AF;stroke-width:1.5;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="558.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">Which app MCP to call? Five routing patterns</text>
+<text class="sub" x="40" y="65">The purple box = where the choice happens &#183; teal = tools the model can see this turn</text>
+
+<!-- Lane template repeated; T values 92,178,264,350,436 -->
+<!-- L1 Scoped binding -->
+<g class="gray"><rect x="24" y="111" width="156" height="40" rx="8"/><text class="t" x="102" y="130" text-anchor="middle">Scoped binding</text><text class="s" x="102" y="145" text-anchor="middle">simplest, safest</text></g>
+<g class="gray"><rect x="192" y="116" width="66" height="30" rx="8"/><text class="s" x="225" y="135" text-anchor="middle">query</text></g>
+<g class="indigo"><rect x="280" y="104" width="212" height="54" rx="9"/><text class="t" x="386" y="125" text-anchor="middle">Agent &#183; 1 app</text><text class="s" x="386" y="141" text-anchor="middle">bound in config</text></g>
+<g class="teal"><rect x="540" y="92" width="200" height="22" rx="6"/><text class="s" x="640" y="107" text-anchor="middle">app A &#183; MCP</text></g>
+<g class="hide"><rect x="540" y="120" width="200" height="22" rx="6"/><text class="s" x="640" y="135" text-anchor="middle">app B &#183; MCP</text></g>
+<g class="hide"><rect x="540" y="148" width="200" height="22" rx="6"/><text class="s" x="640" y="163" text-anchor="middle">app C &#183; MCP</text></g>
+<line class="ln" x1="258" y1="131" x2="278" y2="131" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="131" x2="538" y2="103" marker-end="url(#ar)"/>
+
+<!-- L2 Flat federation -->
+<g class="gray"><rect x="24" y="197" width="156" height="40" rx="8"/><text class="t" x="102" y="216" text-anchor="middle">Flat federation</text><text class="s" x="102" y="231" text-anchor="middle">few apps</text></g>
+<g class="gray"><rect x="192" y="202" width="66" height="30" rx="8"/><text class="s" x="225" y="221" text-anchor="middle">query</text></g>
+<g class="indigo"><rect x="280" y="190" width="212" height="54" rx="9"/><text class="t" x="386" y="211" text-anchor="middle">Agent &#183; all tools</text><text class="s" x="386" y="227" text-anchor="middle">model picks, namespaced</text></g>
+<g class="teal"><rect x="540" y="178" width="200" height="22" rx="6"/><text class="s" x="640" y="193" text-anchor="middle">app A &#183; MCP</text></g>
+<g class="teal"><rect x="540" y="206" width="200" height="22" rx="6"/><text class="s" x="640" y="221" text-anchor="middle">app B &#183; MCP</text></g>
+<g class="teal"><rect x="540" y="234" width="200" height="22" rx="6"/><text class="s" x="640" y="249" text-anchor="middle">app C &#183; MCP</text></g>
+<line class="ln" x1="258" y1="217" x2="278" y2="217" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="217" x2="538" y2="189" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="217" x2="538" y2="217" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="217" x2="538" y2="245" marker-end="url(#ar)"/>
+
+<!-- L3 Two-stage router -->
+<g class="gray"><rect x="24" y="283" width="156" height="40" rx="8"/><text class="t" x="102" y="302" text-anchor="middle">Two-stage router</text><text class="s" x="102" y="317" text-anchor="middle">predictable</text></g>
+<g class="gray"><rect x="192" y="288" width="66" height="30" rx="8"/><text class="s" x="225" y="307" text-anchor="middle">query</text></g>
+<g class="indigo"><rect x="280" y="276" width="212" height="54" rx="9"/><text class="t" x="386" y="297" text-anchor="middle">Classifier &#8594; agent</text><text class="s" x="386" y="313" text-anchor="middle">narrow, then act</text></g>
+<g class="hide"><rect x="540" y="264" width="200" height="22" rx="6"/><text class="s" x="640" y="279" text-anchor="middle">app A &#183; MCP</text></g>
+<g class="teal"><rect x="540" y="292" width="200" height="22" rx="6"/><text class="s" x="640" y="307" text-anchor="middle">app B &#183; MCP</text></g>
+<g class="hide"><rect x="540" y="320" width="200" height="22" rx="6"/><text class="s" x="640" y="335" text-anchor="middle">app C &#183; MCP</text></g>
+<line class="ln" x1="258" y1="303" x2="278" y2="303" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="303" x2="538" y2="303" marker-end="url(#ar)"/>
+
+<!-- L4 Tool retrieval -->
+<g class="gray"><rect x="24" y="369" width="156" height="40" rx="8"/><text class="t" x="102" y="388" text-anchor="middle">Tool retrieval</text><text class="s" x="102" y="403" text-anchor="middle">many tools &#183; Gateway</text></g>
+<g class="gray"><rect x="192" y="374" width="66" height="30" rx="8"/><text class="s" x="225" y="393" text-anchor="middle">query</text></g>
+<g class="indigo"><rect x="280" y="362" width="212" height="54" rx="9"/><text class="t" x="386" y="383" text-anchor="middle">Tool search &#8594; agent</text><text class="s" x="386" y="399" text-anchor="middle">top-k by embedding</text></g>
+<g class="teal"><rect x="540" y="350" width="200" height="22" rx="6"/><text class="s" x="640" y="365" text-anchor="middle">app A &#183; MCP</text></g>
+<g class="teal"><rect x="540" y="378" width="200" height="22" rx="6"/><text class="s" x="640" y="393" text-anchor="middle">app B &#183; MCP</text></g>
+<g class="hide"><rect x="540" y="406" width="200" height="22" rx="6"/><text class="s" x="640" y="421" text-anchor="middle">app C &#183; MCP</text></g>
+<line class="ln" x1="258" y1="389" x2="278" y2="389" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="389" x2="538" y2="361" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="389" x2="538" y2="389" marker-end="url(#ar)"/>
+
+<!-- L5 Supervisor -->
+<g class="gray"><rect x="24" y="455" width="156" height="40" rx="8"/><text class="t" x="102" y="474" text-anchor="middle">Supervisor</text><text class="s" x="102" y="489" text-anchor="middle">strong isolation</text></g>
+<g class="gray"><rect x="192" y="460" width="66" height="30" rx="8"/><text class="s" x="225" y="479" text-anchor="middle">query</text></g>
+<g class="indigo"><rect x="280" y="448" width="212" height="54" rx="9"/><text class="t" x="386" y="469" text-anchor="middle">Supervisor &#8594; subagent</text><text class="s" x="386" y="485" text-anchor="middle">subagent owns app</text></g>
+<g class="hide"><rect x="540" y="436" width="200" height="22" rx="6"/><text class="s" x="640" y="451" text-anchor="middle">app A &#183; MCP</text></g>
+<g class="hide"><rect x="540" y="464" width="200" height="22" rx="6"/><text class="s" x="640" y="479" text-anchor="middle">app B &#183; MCP</text></g>
+<g class="teal"><rect x="540" y="492" width="200" height="22" rx="6"/><text class="s" x="640" y="507" text-anchor="middle">app C &#183; MCP</text></g>
+<line class="ln" x1="258" y1="475" x2="278" y2="475" marker-end="url(#ar)"/>
+<line class="ln" x1="494" y1="475" x2="538" y2="503" marker-end="url(#ar)"/>
+
+<!-- legend -->
+<rect x="40" y="532" width="13" height="13" rx="3" fill="#CCFBF1" stroke="#14B8A6" stroke-width="1.5"/><text class="s" x="60" y="542" fill="#6B7280">exposed to model</text>
+<rect x="200" y="532" width="13" height="13" rx="3" fill="#F3F4F6" stroke="#9CA3AF" stroke-width="1.5" stroke-dasharray="4 3"/><text class="s" x="220" y="542" fill="#6B7280">hidden this turn</text>
+<rect x="350" y="532" width="13" height="13" rx="3" fill="#E0E7FF" stroke="#6366F1" stroke-width="1.5"/><text class="s" x="370" y="542" fill="#6B7280">routing step</text>
+</svg>

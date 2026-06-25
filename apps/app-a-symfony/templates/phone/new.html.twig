@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}App A · Add a phone{% endblock %}
+{% block body %}
+<div style="font-family: system-ui, -apple-system, sans-serif; max-width: 520px; margin: 2rem auto; padding: 0 1rem; color:#1f2937;">
+  <p><a href="{{ path('phone_index') }}" style="color:#4338ca;">← Catalog</a></p>
+  <h1>Add a phone</h1>
+  <form method="post" action="{{ path('phone_create') }}" style="display:grid;gap:.75rem;">
+    <label>Brand<br><input name="brand" required style="width:100%;padding:.45rem;box-sizing:border-box;"></label>
+    <label>Model<br><input name="model" required style="width:100%;padding:.45rem;box-sizing:border-box;"></label>
+    <label>Release year<br><input name="releaseYear" type="number" style="width:100%;padding:.45rem;box-sizing:border-box;"></label>
+    <label>Storage options (comma-separated)<br><input name="storageOptions" placeholder="128GB, 256GB" style="width:100%;padding:.45rem;box-sizing:border-box;"></label>
+    <button type="submit" style="padding:.55rem;background:#6366F1;color:#fff;border:0;border-radius:6px;cursor:pointer;">Save phone</button>
+  </form>
+</div>
+{% endblock %}

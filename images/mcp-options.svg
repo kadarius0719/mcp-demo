@@ -1,0 +1,46 @@
+<svg width="900" height="470" viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Two ways to expose each app over MCP</title>
+<desc>Option 0 uses an AgentCore Gateway OpenAPI/Smithy target over the existing API and writes no MCP code. Option 1 embeds an MCP server in the Symfony app for custom-shaped tools. Both sit behind one Gateway and the central agent.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.ct{font-size:16px;font-weight:700}.cs{font-size:12px}
+.t{font-size:13.5px;font-weight:600}.s{font-size:11px}
+.gray rect{fill:#F3F4F6;stroke:#D1D5DB}.gray .t{fill:#374151}.gray .s{fill:#6B7280}
+.indigo rect{fill:#E0E7FF;stroke:#6366F1}.indigo .t{fill:#3730A3}.indigo .s{fill:#4338CA}
+.teal rect{fill:#CCFBF1;stroke:#14B8A6}.teal .t{fill:#115E59}.teal .s{fill:#0F766E}
+rect{stroke-width:1.5}
+.ln{stroke:#9CA3AF;stroke-width:1.6;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="468.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">Two ways to expose each app over MCP</text>
+<text class="sub" x="40" y="65">Mix per app &#8212; both end up behind one Gateway and the central agent</text>
+
+<!-- Left card: Option 0 -->
+<rect x="40" y="92" width="390" height="296" rx="12" fill="#F0FDF4" stroke="#22C55E" stroke-width="1.5"/>
+<text class="ct" x="62" y="124" fill="#166534">Option 0 &#8212; no MCP code</text>
+<text class="cs" x="62" y="144" fill="#15803D">Fastest &#183; reuses what you already have</text>
+<g class="gray"><rect x="85" y="160" width="300" height="50" rx="9"/><text class="t" x="235" y="181" text-anchor="middle">Existing REST / search API</text><text class="s" x="235" y="197" text-anchor="middle">controllers you already have</text></g>
+<line class="ln" x1="235" y1="210" x2="235" y2="230" marker-end="url(#ar)"/>
+<g class="indigo"><rect x="85" y="232" width="300" height="50" rx="9"/><text class="t" x="235" y="253" text-anchor="middle">AgentCore Gateway</text><text class="s" x="235" y="269" text-anchor="middle">OpenAPI / Smithy target &#8594; MCP</text></g>
+<line class="ln" x1="235" y1="282" x2="235" y2="302" marker-end="url(#ar)"/>
+<g class="teal"><rect x="85" y="304" width="300" height="50" rx="9"/><text class="t" x="235" y="325" text-anchor="middle">MCP tools, auto-generated</text><text class="s" x="235" y="341" text-anchor="middle">no PHP MCP code to write</text></g>
+
+<!-- Right card: Option 1 -->
+<rect x="470" y="92" width="390" height="296" rx="12" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+<text class="ct" x="492" y="124" fill="#3730A3">Option 1 &#8212; app MCP server</text>
+<text class="cs" x="492" y="144" fill="#4338CA">More control &#183; custom-shaped tools (pre-1.0 SDK)</text>
+<g class="gray"><rect x="515" y="160" width="300" height="50" rx="9"/><text class="t" x="665" y="181" text-anchor="middle">Symfony + mcp/sdk + bundle</text><text class="s" x="665" y="197" text-anchor="middle">#[McpTool] on existing services</text></g>
+<line class="ln" x1="665" y1="210" x2="665" y2="230" marker-end="url(#ar)"/>
+<g class="indigo"><rect x="515" y="232" width="300" height="50" rx="9"/><text class="t" x="665" y="253" text-anchor="middle">/_mcp Streamable HTTP</text><text class="s" x="665" y="269" text-anchor="middle">in-process domain reuse</text></g>
+<line class="ln" x1="665" y1="282" x2="665" y2="302" marker-end="url(#ar)"/>
+<g class="teal"><rect x="515" y="304" width="300" height="50" rx="9"/><text class="t" x="665" y="325" text-anchor="middle">Register as Gateway target</text><text class="s" x="665" y="341" text-anchor="middle">curated, analytical tools</text></g>
+
+<!-- Unifying footer -->
+<rect x="40" y="404" width="820" height="46" rx="10" fill="#EEF2FF" stroke="#6366F1" stroke-width="1.5"/>
+<text x="450" y="432" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="13.5" font-weight="600" fill="#3730A3">Both sit behind one AgentCore Gateway + the central agent &#8212; choose per app.</text>
+</svg>

@@ -1,0 +1,59 @@
+<svg width="900" height="470" viewBox="0 0 900 470" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Cross-app read-only authorization model</title>
+<desc>If the user is authorized in the target app, the agent reads as the user via OBO and the app enforces row access. If not, a governed feature/role policy decides whether the chat may expose that data; if allowed, the agent reads via a read-only service credential with tenant scoping, redaction and audit. Writes are impossible by construction.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}.sub{font-size:13px;fill:#6B7280}
+.t{font-size:13px;font-weight:600}.s{font-size:11px}.yn{font-size:10.5px;font-weight:700;fill:#6B7280}
+.gray rect{fill:#F3F4F6;stroke:#D1D5DB}.gray .t{fill:#374151}.gray .s{fill:#6B7280}
+.indigo rect{fill:#E0E7FF;stroke:#6366F1}.indigo .t{fill:#3730A3}.indigo .s{fill:#4338CA}
+.teal rect{fill:#CCFBF1;stroke:#14B8A6}.teal .t{fill:#115E59}.teal .s{fill:#0F766E}
+.red rect{fill:#FEF2F2;stroke:#EF4444}.red .t{fill:#991B1B}
+rect{stroke-width:1.5}
+.ln{stroke:#9CA3AF;stroke-width:1.6;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="468.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">Authorization model &#8212; cross-app, read-only</text>
+<text class="sub" x="40" y="65">Default to the user's own access; a governed policy gates anything broader</text>
+
+<!-- left flow -->
+<g class="gray"><rect x="40" y="100" width="240" height="46" rx="9"/><text class="t" x="160" y="121" text-anchor="middle">User asks (identity U)</text><text class="s" x="160" y="137" text-anchor="middle">in App A's chat</text></g>
+<line class="ln" x1="160" y1="146" x2="160" y2="170" marker-end="url(#ar)"/>
+
+<g class="indigo"><rect x="40" y="172" width="240" height="56" rx="9"/><text class="t" x="160" y="196" text-anchor="middle">Is U authorized in</text><text class="t" x="160" y="212" text-anchor="middle">the target app?</text></g>
+<g class="teal"><rect x="320" y="174" width="250" height="54" rx="9"/><text class="t" x="335" y="196">Read AS the user (OBO)</text><text class="s" x="335" y="214">app enforces row access &#8594; answer</text></g>
+<line class="ln" x1="280" y1="200" x2="318" y2="200" marker-end="url(#ar)"/>
+<text class="yn" x="299" y="193" text-anchor="middle">YES</text>
+<line class="ln" x1="160" y1="228" x2="160" y2="256" marker-end="url(#ar)"/>
+<text class="yn" x="172" y="246">NO</text>
+
+<g class="indigo"><rect x="40" y="258" width="240" height="60" rx="9"/><text class="t" x="160" y="282" text-anchor="middle">Governed policy: may this</text><text class="t" x="160" y="298" text-anchor="middle">feature/role expose it?</text></g>
+<g class="teal"><rect x="320" y="258" width="250" height="60" rx="9"/><text class="t" x="335" y="281">Read via read-only service cred</text><text class="s" x="335" y="299">tenant scope + redaction + audit</text><text class="s" x="335" y="313">&#8594; answer</text></g>
+<line class="ln" x1="280" y1="288" x2="318" y2="288" marker-end="url(#ar)"/>
+<text class="yn" x="299" y="281" text-anchor="middle">YES</text>
+<line class="ln" x1="160" y1="318" x2="160" y2="346" marker-end="url(#ar)"/>
+<text class="yn" x="172" y="336">NO</text>
+
+<g class="red"><rect x="40" y="348" width="240" height="44" rx="9"/><text class="t" x="160" y="375" text-anchor="middle">Deny, or ask to clarify</text></g>
+
+<!-- right panel: read-only invariant -->
+<rect x="600" y="100" width="270" height="292" rx="12" fill="#FFFBEB" stroke="#F59E0B" stroke-width="1.5"/>
+<text x="620" y="128" font-family="Helvetica,Arial,sans-serif" font-size="14" font-weight="700" fill="#92400E">Read-only invariant</text>
+<text x="620" y="146" font-family="Helvetica,Arial,sans-serif" font-size="11.5" fill="#B45309">no write path exists</text>
+<text class="s" x="620" y="176" fill="#92400E">&#9642; Replica only (no writer route)</text>
+<text class="s" x="620" y="200" fill="#92400E">&#9642; SELECT on curated views only</text>
+<text class="s" x="620" y="224" fill="#92400E">&#9642; No write tools in the toolbox</text>
+<text class="s" x="620" y="248" fill="#92400E">&#9642; SQL validator: single SELECT</text>
+<text class="s" x="620" y="272" fill="#92400E">&#9642; IAM: no write endpoints</text>
+<text class="s" x="620" y="296" fill="#92400E">&#9642; Guardrails deny write intent</text>
+<rect x="620" y="318" width="230" height="48" rx="8" fill="#F0FDF4" stroke="#22C55E" stroke-width="1.5"/>
+<text x="735" y="338" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="12" font-weight="700" fill="#166534">&#10003; Mutation impossible</text>
+<text x="735" y="354" text-anchor="middle" font-family="Helvetica,Arial,sans-serif" font-size="11" fill="#15803D">any one layer suffices</text>
+
+<text class="sub" x="40" y="424">Layer 1 = what the agent <tspan font-weight="700">can</tspan> read (read-only ceiling). Layer 2 = what this user <tspan font-weight="700">may be shown</tspan> (governed policy).</text>
+<text class="sub" x="40" y="446">The governed path is where you re-add authz centrally in exchange for cross-app reach.</text>
+</svg>

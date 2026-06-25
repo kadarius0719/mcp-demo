@@ -1,0 +1,67 @@
+<svg width="900" height="600" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Cross-app natural-language query service reference architecture</title>
+<desc>Consumer chat features call one central query-er agent on Bedrock; the agent reaches each app's data through tools (existing app API/search, read-only SQL over curated views, or a vector knowledge base), which read from RDS replicas, app services and search indexes, and an embeddings store.</desc>
+<defs>
+<marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+<path d="M1 1 L8 5 L1 9" fill="none" stroke="#9CA3AF" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker>
+<style>
+text{font-family:Helvetica,Arial,sans-serif}
+.h{font-size:21px;font-weight:700;fill:#111827}
+.sub{font-size:13px;fill:#6B7280}
+.t{font-size:14px;font-weight:600}
+.s{font-size:11.5px}
+.gut{font-size:11px;font-weight:700;letter-spacing:.08em;fill:#9CA3AF}
+rect{stroke-width:1.5}
+.blue rect{fill:#DBEAFE;stroke:#3B82F6}.blue .t{fill:#1E40AF}.blue .s{fill:#1D4ED8}
+.indigo rect{fill:#E0E7FF;stroke:#6366F1}.indigo .t{fill:#3730A3}.indigo .s{fill:#4338CA}
+.teal rect{fill:#CCFBF1;stroke:#14B8A6}.teal .t{fill:#115E59}.teal .s{fill:#0F766E}
+.gray rect{fill:#F3F4F6;stroke:#D1D5DB}.gray .t{fill:#374151}.gray .s{fill:#6B7280}
+.cont{fill:#EEF2FF;stroke:#6366F1}
+.ln{stroke:#9CA3AF;stroke-width:1.6;fill:none}
+</style>
+</defs>
+<rect x="0.75" y="0.75" width="898.5" height="598.5" rx="14" fill="#ffffff" stroke="#E5E7EB"/>
+<text class="h" x="40" y="44">Cross-app natural-language query service</text>
+<text class="sub" x="40" y="65">One agent &#183; many app databases &#183; read-only access</text>
+
+<text class="gut" transform="translate(26,300) rotate(-90)" text-anchor="middle">NORTH &#183; CONSUMERS</text>
+<text class="gut" transform="translate(26,478) rotate(-90)" text-anchor="middle">SOUTH &#183; DATA</text>
+
+<!-- Tier 1: consumers -->
+<g class="blue"><rect x="60" y="100" width="220" height="58" rx="10"/><text class="t" x="170" y="126" text-anchor="middle">Symfony app A</text><text class="s" x="170" y="144" text-anchor="middle">chat widget</text></g>
+<g class="blue"><rect x="340" y="100" width="220" height="58" rx="10"/><text class="t" x="450" y="126" text-anchor="middle">Symfony app B</text><text class="s" x="450" y="144" text-anchor="middle">chat feature</text></g>
+<g class="blue"><rect x="620" y="100" width="220" height="58" rx="10"/><text class="t" x="730" y="126" text-anchor="middle">Other app</text><text class="s" x="730" y="144" text-anchor="middle">chat feature</text></g>
+<line class="ln" x1="170" y1="158" x2="170" y2="213" marker-end="url(#ar)"/>
+<line class="ln" x1="450" y1="158" x2="450" y2="213" marker-end="url(#ar)"/>
+<line class="ln" x1="730" y1="158" x2="730" y2="213" marker-end="url(#ar)"/>
+
+<!-- Tier 2: central agent -->
+<rect class="cont" x="60" y="215" width="780" height="122" rx="12"/>
+<text class="t" x="450" y="241" text-anchor="middle" fill="#3730A3">Query-er agent service &#183; Bedrock + Claude &#183; ECS Fargate (north API)</text>
+<g class="gray"><rect x="80" y="262" width="170" height="50" rx="9"/><text class="t" x="165" y="284" text-anchor="middle">Auth + tenant</text><text class="s" x="165" y="300" text-anchor="middle">per-app, scoped</text></g>
+<g class="indigo"><rect x="270" y="262" width="170" height="50" rx="9"/><text class="t" x="355" y="284" text-anchor="middle">Planner</text><text class="s" x="355" y="300" text-anchor="middle">Claude on Bedrock</text></g>
+<g class="indigo"><rect x="460" y="262" width="170" height="50" rx="9"/><text class="t" x="545" y="284" text-anchor="middle">Guardrails</text><text class="s" x="545" y="300" text-anchor="middle">PII + allowlist</text></g>
+<g class="indigo"><rect x="650" y="262" width="170" height="50" rx="9"/><text class="t" x="735" y="284" text-anchor="middle">Tool router</text><text class="s" x="735" y="300" text-anchor="middle">picks data tool</text></g>
+<line class="ln" x1="170" y1="337" x2="170" y2="368" marker-end="url(#ar)"/>
+<line class="ln" x1="450" y1="337" x2="450" y2="368" marker-end="url(#ar)"/>
+<line class="ln" x1="730" y1="337" x2="730" y2="368" marker-end="url(#ar)"/>
+
+<!-- Tier 3: data-access tools -->
+<g class="teal"><rect x="60" y="370" width="220" height="58" rx="10"/><text class="t" x="170" y="396" text-anchor="middle">App API / search</text><text class="s" x="170" y="414" text-anchor="middle">existing endpoints</text></g>
+<g class="teal"><rect x="340" y="370" width="220" height="58" rx="10"/><text class="t" x="450" y="396" text-anchor="middle">Read-only SQL</text><text class="s" x="450" y="414" text-anchor="middle">curated views</text></g>
+<g class="teal"><rect x="620" y="370" width="220" height="58" rx="10"/><text class="t" x="730" y="396" text-anchor="middle">Knowledge base</text><text class="s" x="730" y="414" text-anchor="middle">vector / RAG</text></g>
+<line class="ln" x1="170" y1="428" x2="170" y2="468" marker-end="url(#ar)"/>
+<line class="ln" x1="450" y1="428" x2="450" y2="468" marker-end="url(#ar)"/>
+<line class="ln" x1="730" y1="428" x2="730" y2="468" marker-end="url(#ar)"/>
+
+<!-- Tier 4: data stores -->
+<g class="gray"><rect x="60" y="470" width="220" height="52" rx="10"/><text class="t" x="170" y="494" text-anchor="middle">RDS read replicas</text><text class="s" x="170" y="511" text-anchor="middle">read-only user</text></g>
+<g class="gray"><rect x="340" y="470" width="220" height="52" rx="10"/><text class="t" x="450" y="494" text-anchor="middle">App services + index</text><text class="s" x="450" y="511" text-anchor="middle">Symfony &#183; OpenSearch</text></g>
+<g class="gray"><rect x="620" y="470" width="220" height="52" rx="10"/><text class="t" x="730" y="494" text-anchor="middle">S3 docs + vectors</text><text class="s" x="730" y="511" text-anchor="middle">embeddings store</text></g>
+
+<!-- legend -->
+<rect x="60" y="552" width="13" height="13" rx="3" fill="#DBEAFE" stroke="#3B82F6" stroke-width="1.5"/><text class="s" x="80" y="562" fill="#6B7280">consumer apps</text>
+<rect x="190" y="552" width="13" height="13" rx="3" fill="#E0E7FF" stroke="#6366F1" stroke-width="1.5"/><text class="s" x="210" y="562" fill="#6B7280">agent service</text>
+<rect x="315" y="552" width="13" height="13" rx="3" fill="#CCFBF1" stroke="#14B8A6" stroke-width="1.5"/><text class="s" x="335" y="562" fill="#6B7280">data-access tools</text>
+<rect x="455" y="552" width="13" height="13" rx="3" fill="#F3F4F6" stroke="#D1D5DB" stroke-width="1.5"/><text class="s" x="475" y="562" fill="#6B7280">data stores</text>
+</svg>

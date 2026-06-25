@@ -1,0 +1,107 @@
+name: phone-interop-demo
+
+services:
+  # App A — phone catalog (source of truth) + read-only /api/phones
+  app-a:
+    build:
+      context: .
+      dockerfile: docker/php.Dockerfile
+    environment:
+      APP_ENV: dev
+      SEED_CMD: app:seed-phones
+    volumes:
+      - ./app-a-symfony:/app
+      - app_a_vendor:/app/vendor
+      - app_a_var:/app/var
+    ports:
+      - "8001:8000"
+
+  # App B — experience capture API (requires a canonical phone)
+  app-b-api:
+    build:
+      context: .
+      dockerfile: docker/php.Dockerfile
+    environment:
+      APP_ENV: dev
+    volumes:
+      - ./app-b-symfony-api:/app
+      - app_b_vendor:/app/vendor
+      - app_b_var:/app/var
+    ports:
+      - "8002:8000"
+
+  # App B — React frontend (the constrained phone field)
+  web:
+    image: node:20-slim
+    working_dir: /app
+    command: sh -lc "npm install --no-audit --no-fund && npm run dev"
+    volumes:
+      - ./app-b-react:/app
+      - web_node_modules:/app/node_modules
+    ports:
+      - "5173:5173"
+
+  # MCP server — federates App A + App B as read-only tools (the "Gateway" role)
+  mcp:
+    image: node:20-slim
+    working_dir: /app
+    command: sh -lc "npm install --no-audit --no-fund && node server.js"
+    environment:
+      APP_A_URL: http://app-a:8000
+      APP_B_URL: http://app-b-api:8000
+      PORT: 3001
+    volumes:
+      - ./mcp-server:/app
+      - mcp_node_modules:/app/node_modules
+    ports:
+      - "3001:3001"
+
+  # Agent — MCP client + local-model tool-use loop (read-only).
+  # By default it uses your HOST Ollama (no API key, no re-download).
+  # In AWS this provider swaps to Bedrock + Claude — same loop.
+  agent:
+    image: node:20-slim
+    working_dir: /app
+    command: sh -lc "npm install --no-audit --no-fund && node index.js"
+    environment:
+      MCP_URL: http://mcp:3001/mcp
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      MODEL: ${OLLAMA_MODEL:-llama3.2:1b}
+      PORT: 3002
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - mcp
+    volumes:
+      - ./agent:/app
+      - agent_node_modules:/app/node_modules
+    ports:
+      - "8003:3002"
+
+  # Optional self-contained model (only if you DON'T have native Ollama):
+  #   docker compose --profile bundled-model up -d
+  #   and set OLLAMA_URL=http://ollama:11434 for the agent.
+  ollama:
+    image: ollama/ollama
+    profiles: ["bundled-model"]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        ollama serve &
+        until ollama list >/dev/null 2>&1; do sleep 1; done
+        ollama pull ${OLLAMA_MODEL:-llama3.2:1b}
+        wait
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+
+volumes:
+  app_a_vendor:
+  app_a_var:
+  app_b_vendor:
+  app_b_var:
+  web_node_modules:
+  mcp_node_modules:
+  agent_node_modules:
+  ollama_data:
